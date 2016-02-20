@@ -57,6 +57,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SignalR.SLAB\SignalR.SLAB.csproj">
+      <Project>{6e8fcf04-105f-47c2-bc0e-739b4d5a4e07}</Project>
+      <Name>SignalR.SLAB</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
