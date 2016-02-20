@@ -30,7 +30,7 @@ namespace SignalR.SLAB
         public const int ControllerWarning = 12;
     }
 
-    public class HubType
+    public class HubServerType
     {
         public const int HubServerInformational = 13;
         public const int HubServerCritical = 14;
@@ -38,5 +38,16 @@ namespace SignalR.SLAB
         public const int HubServerLogAlways = 16;
         public const int HubServerVerbose = 17;
         public const int HubServerWarning = 18;
+    }
+
+    public class HubClientType
+    {
+        public const int HubClientInformational = 30;
+        public const int HubClientCritical = 31;
+        public const int HubClientError = 32;
+        public const int HubClientLogAlways = 33;
+        public const int HubClientVerbose = 34;
+        public const int HubClientWarning = 35;
+        public const int HubClientEvents = 36;
     }
 }

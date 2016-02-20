@@ -22,19 +22,19 @@ namespace SignalR.Host.Service
         public void AddMessage(string name, string message)
         {
             _hubContext.Clients.All.addMessage("MyHub", "ServerMessage");
-            _slabLogger.Log(HubType.HubServerVerbose, "MyHub Sending addMessage");
+            _slabLogger.Log(HubServerType.HubServerVerbose, "MyHub Sending addMessage");
         }
 
         public void Heartbeat()
         {
             _hubContext.Clients.All.heartbeat();
-            _slabLogger.Log(HubType.HubServerVerbose, "MyHub Sending heartbeat");
+            _slabLogger.Log(HubServerType.HubServerVerbose, "MyHub Sending heartbeat");
         }
 
         public void SendHelloObject(HelloModel hello)
         {
             _hubContext.Clients.All.sendHelloObject(hello);
-            _slabLogger.Log(HubType.HubServerVerbose, "MyHub Sending sendHelloObject");
+            _slabLogger.Log(HubServerType.HubServerVerbose, "MyHub Sending sendHelloObject");
         }
     }
 }

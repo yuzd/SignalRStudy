@@ -28,7 +28,7 @@ namespace SignalR.Host
             ObservableEventListener.EnableEvents(GlobalEvents.Log, EventLevel.Informational);
             ObservableEventListener.EnableEvents(HubServerEvents.Log, EventLevel.Informational);
             ObservableEventListener.LogToConsole();
-
+            //Hub孵化器
             GlobalHost.DependencyResolver.Register(typeof (IHubActivator),
                 () => new UnityHubActivator(UnityConfiguration.GetConfiguredContainer()));
             GlobalHost.HubPipeline.AddModule(new LoggingPipelineModule());

@@ -17,10 +17,10 @@ namespace SignalR.Host.Service
 
         protected override void OnIncomingError(ExceptionContext ex, IHubIncomingInvokerContext context)
         {
-            _slabLogger.Log(HubType.HubServerVerbose, "=> Exception " + ex.Error + " " + ex.Result);
+            _slabLogger.Log(HubServerType.HubServerVerbose, "=> Exception " + ex.Error + " " + ex.Result);
             if (ex.Error.InnerException != null)
             {
-                _slabLogger.Log(HubType.HubServerVerbose, "=> Inner Exception " + ex.Error.InnerException.Message);
+                _slabLogger.Log(HubServerType.HubServerVerbose, "=> Inner Exception " + ex.Error.InnerException.Message);
             }
             base.OnIncomingError(ex, context);
         }

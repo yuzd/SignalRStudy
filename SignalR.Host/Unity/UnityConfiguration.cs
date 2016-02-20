@@ -33,7 +33,7 @@ namespace SignalR.Host.Unity
         public static void RegisterTypes(IUnityContainer containerObj)
         {
 
-            containerObj.RegisterType<IHubLogger, HubLogger>(new ContainerControlledLifetimeManager());
+            containerObj.RegisterType<IHubLogger, HubServerLogger>(new ContainerControlledLifetimeManager());
             containerObj.RegisterType<ISendHubSync, Service.SendHubSync>(new ContainerControlledLifetimeManager());
 
             // Hub must be transient see signalr docs

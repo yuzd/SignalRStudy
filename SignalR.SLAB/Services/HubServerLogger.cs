@@ -5,9 +5,9 @@ using SignalR.SLAB.Loggers;
 
 namespace SignalR.SLAB.Services
 {
-    public class HubLogger : IHubLogger
+    public class HubServerLogger : IHubLogger
     {
-        public HubLogger()
+        public HubServerLogger()
         {
             RegisterLog();
         }
@@ -19,7 +19,7 @@ namespace SignalR.SLAB.Services
             var globalLogger = new GlobalLogger();
             globalLogger.RegisterLogger(_exectueLogDict);
 
-            var hubServerLogger = new HubServerLogger();
+            var hubServerLogger = new Loggers.HubServerLogger();
             hubServerLogger.RegisterLogger(_exectueLogDict);
         }
 

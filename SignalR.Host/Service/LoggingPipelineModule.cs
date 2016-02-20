@@ -17,12 +17,12 @@ namespace SignalR.Host.Service
 
         protected override bool OnBeforeIncoming(IHubIncomingInvokerContext context)
         {
-            _slabLogger.Log(HubType.HubServerVerbose, "=> Invoking " + context.MethodDescriptor.Name + " on hub " + context.MethodDescriptor.Hub.Name);
+            _slabLogger.Log(HubServerType.HubServerVerbose, "=> Invoking " + context.MethodDescriptor.Name + " on hub " + context.MethodDescriptor.Hub.Name);
             return base.OnBeforeIncoming(context);
         }
         protected override bool OnBeforeOutgoing(IHubOutgoingInvokerContext context)
         {
-            _slabLogger.Log(HubType.HubServerVerbose, "<= Invoking " + context.Invocation.Method + " on client hub " + context.Invocation.Hub);
+            _slabLogger.Log(HubServerType.HubServerVerbose, "<= Invoking " + context.Invocation.Method + " on client hub " + context.Invocation.Hub);
             return base.OnBeforeOutgoing(context);
         } 
     }

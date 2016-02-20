@@ -50,13 +50,16 @@
   <ItemGroup>
     <Compile Include="Events\ControllerEvents.cs" />
     <Compile Include="Events\GlobalEvents.cs" />
+    <Compile Include="Events\HubClientEvents.cs" />
     <Compile Include="Events\HubServerEvents.cs" />
     <Compile Include="Loggers\ControllerLogger.cs" />
     <Compile Include="Loggers\GlobalLogger.cs" />
+    <Compile Include="Loggers\HubClientLogger.cs" />
     <Compile Include="Loggers\HubServerLogger.cs" />
     <Compile Include="LogType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\HubLogger.cs" />
+    <Compile Include="Services\HubClientLogger.cs" />
+    <Compile Include="Services\HubServerLogger.cs" />
     <Compile Include="Services\IHubLogger.cs" />
     <Compile Include="Services\IWebLogger.cs" />
     <Compile Include="Services\WebLogger.cs" />

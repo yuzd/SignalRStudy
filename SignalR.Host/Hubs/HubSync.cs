@@ -30,38 +30,38 @@ namespace SignalR.Host.Hubs
         #region ISendHubSync
         public void AddMessage(string name, string message)
         {
-            _slabLogger.Log(HubType.HubServerVerbose, "HubSync Sending AddMessage " + name + " " + message);
+            _slabLogger.Log(HubServerType.HubServerVerbose, "HubSync Sending AddMessage " + name + " " + message);
             Clients.All.AddMessage(name, message);
         }
 
         public void Heartbeat()
         {
-            _slabLogger.Log(HubType.HubServerVerbose, "HubSync Sending Heartbeat");
+            _slabLogger.Log(HubServerType.HubServerVerbose, "HubSync Sending Heartbeat");
             Clients.All.Heartbeat();
         }
 
         public void SendHelloObject(HelloModel hello)
         {
-            _slabLogger.Log(HubType.HubServerVerbose, "HubSync Sending SendHelloObject " + hello.Molly + " " + hello.Age);
+            _slabLogger.Log(HubServerType.HubServerVerbose, "HubSync Sending SendHelloObject " + hello.Molly + " " + hello.Age);
             Clients.All.SendHelloObject(hello);
         } 
         #endregion
 
         public override Task OnConnected()
         {
-            _slabLogger.Log(HubType.HubServerVerbose, "HubSync OnConnected" + Context.ConnectionId);
+            _slabLogger.Log(HubServerType.HubServerVerbose, "HubSync OnConnected" + Context.ConnectionId);
             return (base.OnConnected());
         }
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            _slabLogger.Log(HubType.HubServerVerbose, "HubSync OnDisconnected" + Context.ConnectionId);
+            _slabLogger.Log(HubServerType.HubServerVerbose, "HubSync OnDisconnected" + Context.ConnectionId);
             return (base.OnDisconnected(stopCalled));
         }
 
         public override Task OnReconnected()
         {
-            _slabLogger.Log(HubType.HubServerVerbose, "HubSync OnReconnected" + Context.ConnectionId);
+            _slabLogger.Log(HubServerType.HubServerVerbose, "HubSync OnReconnected" + Context.ConnectionId);
             return (base.OnReconnected());
         }
     }

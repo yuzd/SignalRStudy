@@ -9,12 +9,12 @@ namespace SignalR.SLAB.Loggers
     {
         public void RegisterLogger(Dictionary<int, Action<string>> exectueLogDict)
         {
-            exectueLogDict.Add(HubType.HubServerCritical, Critical);
-            exectueLogDict.Add(HubType.HubServerError, Error);
-            exectueLogDict.Add(HubType.HubServerInformational, Informational);
-            exectueLogDict.Add(HubType.HubServerLogAlways, LogAlways);
-            exectueLogDict.Add(HubType.HubServerVerbose, Verbose);
-            exectueLogDict.Add(HubType.HubServerWarning, Warning);
+            exectueLogDict.Add(HubServerType.HubServerCritical, Critical);
+            exectueLogDict.Add(HubServerType.HubServerError, Error);
+            exectueLogDict.Add(HubServerType.HubServerInformational, Informational);
+            exectueLogDict.Add(HubServerType.HubServerLogAlways, LogAlways);
+            exectueLogDict.Add(HubServerType.HubServerVerbose, Verbose);
+            exectueLogDict.Add(HubServerType.HubServerWarning, Warning);
         }
 
         public void Critical(string message)
