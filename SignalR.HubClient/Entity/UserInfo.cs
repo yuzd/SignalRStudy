@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace SignalR.HubClient.Entity
 {
-    public class HelloModel
+    public class UserInfo
     {
-        public string Molly { get; set; }
+        public string ConnectionId { get; set; }
 
-        public int Age { get; set; }
+        public string UserName { get; set; }
     }
 }

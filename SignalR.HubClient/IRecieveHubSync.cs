@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +10,6 @@ namespace SignalR.HubClient
 {
     public interface IRecieveHubSync
     {
-        /// <summary>
-        /// 接收文本
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="message"></param>
-        void Recieve_AddMessage(string name, string message);
 
         /// <summary>
         /// 接收心跳
@@ -22,10 +17,22 @@ namespace SignalR.HubClient
         void Recieve_Heartbeat();
 
         /// <summary>
-        /// 接收对象
+        /// 接收信息
         /// </summary>
-        /// <param name="hello"></param>
-        void Recieve_SendHelloObject(HelloModel hello);
+        /// <param name="name"></param>
+        /// <param name="message"></param>
+        void Recieve_SendMessage(string name, string message);
 
+        /// <summary>
+        /// 接收 获取所有用户
+        /// </summary>
+        /// <param name="_userInfoList"></param>
+        void Recieve_RefreshAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList);
+
+        /// <summary>
+        /// 接收 获取用户信息
+        /// </summary>
+        /// <param name="userInfo"></param>
+        void Recieve_GetCurrentUserInfo(UserInfo userInfo);
     }
 }

@@ -58,8 +58,7 @@ namespace SignalR.ConsoleClient
                 {
                     if (myHubClient.State == ConnectionState.Connected)
                     {
-                        var hello = new HelloModel { Age = 10, Molly = "clientMessage" };
-                        myHubClient.SendHelloObject(hello);
+                        
                     }
                     else
                     {

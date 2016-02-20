@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseHubClient.cs" />
-    <Compile Include="Entity\HelloModel.cs" />
+    <Compile Include="Entity\UserInfo.cs" />
     <Compile Include="IRecieveHubSync.cs" />
     <Compile Include="ISendHubSync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
