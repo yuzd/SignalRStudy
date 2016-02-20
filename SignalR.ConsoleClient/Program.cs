@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
+using Microsoft.Practices.EnterpriseLibrary.SemanticLogging;
 using SignalR.HubClient.Entity;
+using SignalR.SLAB.Base;
 using SignalR.SLAB.Events;
 
 namespace SignalR.ConsoleClient
@@ -13,6 +16,16 @@ namespace SignalR.ConsoleClient
     {
         static void Main(string[] args)
         {
+            #region SLAB
+            var ObservableEventListener = new ObservableEventListener();
+            ObservableEventListener.EnableEvents(ControllerEvents.Log, EventLevel.LogAlways, Keywords.All);
+            ObservableEventListener.EnableEvents(GlobalEvents.Log, EventLevel.LogAlways, Keywords.All);
+            ObservableEventListener.EnableEvents(HubClientEvents.Log, EventLevel.LogAlways, Keywords.All);
+            var formatter = new PrefixEventTextFormatter("-----------", null, "# ", @"yyyy-MM-dd hh\:mm\:ss\.fff");
+            ObservableEventListener.LogToConsole(formatter);
+            #endregion
+
+
             var myHubClient = new MyHubClient();
             while (true)
             {
@@ -21,7 +34,7 @@ namespace SignalR.ConsoleClient
                 {
                     if (myHubClient.State == ConnectionState.Connected)
                     {
-                        myHubClient.AddMessage("damien client", "hello all");
+                        myHubClient.AddMessage("client", "hello all");
                     }
                     else
                     {

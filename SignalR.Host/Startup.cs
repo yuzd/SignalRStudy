@@ -11,6 +11,7 @@ using Owin;
 using SignalR.Host.Service;
 using SignalR.Host.Unity;
 using SignalR.Host.Utils;
+using SignalR.SLAB.Base;
 using SignalR.SLAB.Events;
 
 [assembly: OwinStartup(typeof(SignalR.Host.Startup))]
@@ -23,11 +24,15 @@ namespace SignalR.Host
 
         public static void Start()
         {
+            #region SLAB
             var ObservableEventListener = new ObservableEventListener();
-            ObservableEventListener.EnableEvents( ControllerEvents.Log, EventLevel.Informational);
-            ObservableEventListener.EnableEvents(GlobalEvents.Log, EventLevel.Informational);
-            ObservableEventListener.EnableEvents(HubServerEvents.Log, EventLevel.Informational);
-            ObservableEventListener.LogToConsole();
+            ObservableEventListener.EnableEvents(ControllerEvents.Log, EventLevel.LogAlways, Keywords.All);
+            ObservableEventListener.EnableEvents(GlobalEvents.Log, EventLevel.LogAlways, Keywords.All);
+            ObservableEventListener.EnableEvents(HubServerEvents.Log, EventLevel.LogAlways, Keywords.All);
+            var formatter = new PrefixEventTextFormatter("-----------", null, "# ", @"yyyy-MM-dd hh\:mm\:ss\.fff");
+            ObservableEventListener.LogToConsole(formatter);
+            #endregion
+
             //Hub孵化器
             GlobalHost.DependencyResolver.Register(typeof (IHubActivator),
                 () => new UnityHubActivator(UnityConfiguration.GetConfiguredContainer()));

@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\PrefixEventTextFormatter.cs" />
     <Compile Include="Events\ControllerEvents.cs" />
     <Compile Include="Events\GlobalEvents.cs" />
     <Compile Include="Events\HubClientEvents.cs" />
