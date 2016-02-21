@@ -8,15 +8,17 @@ using SignalR.HubClient.Entity;
 
 namespace SignalR.HubClient
 {
-    public interface ISendHubSync
+    public interface  ISendHubSync
     {
         #region 需要接收
+
         /// <summary>
         /// 发送信息
         /// </summary>
         /// <param name="name"></param>
         /// <param name="message"></param>
-        void SendMessage(string name, string message);
+        void SendMessage(string name, string message); 
+        
 
         /// <summary>
         /// 心跳
@@ -27,14 +29,12 @@ namespace SignalR.HubClient
         /// <summary>
         /// 获取所有用户
         /// </summary>
-        /// <param name="_userInfoList"></param>
-        void RefreshAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList);
+        void RefreshAllClientList();
 
         /// <summary>
         /// 获取用户信息
         /// </summary>
-        /// <param name="userInfo"></param>
-        void GetCurrentUserInfo(UserInfo userInfo);
+        void GetCurrentUserInfo();
 
 
         #endregion
@@ -125,7 +125,9 @@ namespace SignalR.HubClient
         /// <param name="groupNameList"></param>
         /// <param name="name"></param>
         /// <param name="message"></param>
-        void SendToOtherManyGroups(IList<string> groupNameList, string name, string message); 
+        void SendToOtherManyGroups(IList<string> groupNameList, string name, string message);
+        void GetAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList);
+        void GetUserInfo(UserInfo userInfo);
         #endregion
 
     }

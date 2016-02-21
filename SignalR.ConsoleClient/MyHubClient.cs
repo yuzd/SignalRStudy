@@ -32,7 +32,7 @@ namespace SignalR.ConsoleClient
             _myHubProxy.On<string, string>("SendMessage", Recieve_SendMessage);
             _myHubProxy.On("Heartbeat", Recieve_Heartbeat);
             _myHubProxy.On<ConcurrentDictionary<string, UserInfo>>("RefreshAllClientList", Recieve_RefreshAllClientList);
-            _myHubProxy.On<UserInfo>("GetCurrentUserInfo", Recieve_GetCurrentUserInfo); 
+            _myHubProxy.On<UserInfo>("GetCurrentUserInfo", Recieve_GetCurrentUserInfo);
             #endregion
 
             StartHubInternal();
@@ -43,26 +43,21 @@ namespace SignalR.ConsoleClient
             Init();
         }
 
-        public void AddMessage(string name, string message)
-        {
-            _myHubProxy.Invoke("addMessage", "client message", " sent from console client").ContinueWith(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    if (task.Exception != null)
-                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
-                }
 
-            }).Wait();
-            SlabClientLogger.Log(HubClientType.HubClientInformational, "Client Sending addMessage to server");
-        }
-
-        void ISendHubSync.SendMessage(string name, string message)
+        public void SendMessage(string name, string message)
         {
             throw new NotImplementedException();
         }
 
-      
+        public void GetAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetUserInfo(UserInfo userInfo)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Heartbeat()
         {
@@ -75,98 +70,206 @@ namespace SignalR.ConsoleClient
                 }
 
             }).Wait();
-            SlabClientLogger.Log(HubClientType.HubClientInformational, "Client heartbeat sent to server");
         }
 
-       
-
-        void ISendHubSync.RefreshAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList)
+        public void RefreshAllClientList()
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("RefreshAllClientList").ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
-        void ISendHubSync.GetCurrentUserInfo(UserInfo userInfo)
+        public void GetCurrentUserInfo()
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("GetCurrentUserInfo").ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
+
 
         public void SendAllClient(string name, string message)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendAllClient",name,message).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendAllClientExceptSelf(string name, string message)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendAllClientExceptSelf", name, message).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendToSelf(string name, string message)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendToSelf", name, message).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendToSingle(string toConnectionID, string name, string message)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendToSingle", toConnectionID,name, message).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendToMany(IList<string> connectionIds, string name, string message)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendToMany", connectionIds, name, message).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendAllClientExcept(string name, string message, params string[] connectionIds)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendAllClientExcept",  name, message, connectionIds).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendToGroup(string groupName, string name, string message)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendToGroup", groupName,name, message).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendToGroupExcept(string groupName, string name, string message, params string[] connectionIds)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendToGroupExcept", groupName, name, message, connectionIds).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendToGroups(IList<string> groupNameList, string name, string message)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendToGroups", groupNameList, name, message).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendToOtherGroups(string groupName, string name, string message)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendToOtherGroups", groupName, name, message).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
         public void SendToOtherManyGroups(IList<string> groupNameList, string name, string message)
         {
-            throw new NotImplementedException();
+            _myHubProxy.Invoke("SendToOtherManyGroups", groupNameList, name, message).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    if (task.Exception != null)
+                        SlabClientLogger.Log(HubClientType.HubClientError, "There was an error opening the connection:" + task.Exception.GetBaseException());
+                }
+
+            }).Wait();
         }
 
-  
+    
 
-     
 
         public void Recieve_Heartbeat()
         {
-            SlabClientLogger.Log(HubClientType.HubClientInformational, "Recieved heartbeat ");
+            SlabClientLogger.Log(HubClientType.HubClientInformational, "Recieved heartbeat Success");
         }
 
         public void Recieve_SendMessage(string name, string message)
         {
-            throw new NotImplementedException();
+            SlabClientLogger.Log(HubClientType.HubClientInformational, $"【{name}】:{message}");
         }
 
         public void Recieve_RefreshAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList)
         {
-            throw new NotImplementedException();
+            userInfoList = _userInfoList;
+            if (userInfoList!=null && userInfoList.Count>0)
+            {
+                foreach (var keyValuePair in userInfoList)
+                {
+                    SlabClientLogger.Log(HubClientType.HubClientInformational, $"【{keyValuePair.Value.ConnectionId}】:{keyValuePair.Value.UserName}");
+                }
+            }
         }
 
         public void Recieve_GetCurrentUserInfo(UserInfo userInfo)
         {
-            throw new NotImplementedException();
+            SlabClientLogger.Log(HubClientType.HubClientInformational, $"【{userInfo.ConnectionId}】:{userInfo.UserName}");
         }
     }
 }

@@ -33,15 +33,17 @@ namespace SignalR.Host.Service
             _slabLogger.Log(HubServerType.HubServerVerbose, "MyHub Sending heartbeat");
         }
 
-        public void RefreshAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList)
+        public void RefreshAllClientList()
         {
             throw new System.NotImplementedException();
         }
 
-        public void GetCurrentUserInfo(UserInfo userInfo)
+        public void GetCurrentUserInfo()
         {
             throw new System.NotImplementedException();
         }
+
+      
 
         public void SendAllClient(string name, string message)
         {
@@ -94,6 +96,16 @@ namespace SignalR.Host.Service
         }
 
         public void SendToOtherManyGroups(IList<string> groupNameList, string name, string message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetUserInfo(UserInfo userInfo)
         {
             throw new System.NotImplementedException();
         }

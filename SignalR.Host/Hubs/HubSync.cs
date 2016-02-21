@@ -167,9 +167,9 @@ namespace SignalR.Host.Hubs
         /// 获取所有用户
         /// </summary>
         /// <param name="_userInfoList"></param>
-        public void RefreshAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList)
+        public void RefreshAllClientList()
         {
-            Clients.All.RefreshAllClientList(GlobalData.userInfoList);
+            Clients.All.GetAllClientList(GlobalData.userInfoList);
         }
 
 
@@ -181,7 +181,7 @@ namespace SignalR.Host.Hubs
         {
             UserInfo userInfo;
             GlobalData.userInfoList.TryGetValue(connectionID, out userInfo);
-            Clients.Client(connectionID).GetCurrentUserInfo(userInfo);
+            Clients.Caller.GetUserInfo(userInfo);
         }
 
         #endregion
