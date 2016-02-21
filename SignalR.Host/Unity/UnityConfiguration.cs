@@ -34,7 +34,7 @@ namespace SignalR.Host.Unity
         {
 
             containerObj.RegisterType<IHubLogger, HubServerLogger>(new ContainerControlledLifetimeManager());
-            containerObj.RegisterType<ISendHubSync, Service.SendHubSync>(new ContainerControlledLifetimeManager());
+            containerObj.RegisterType<SendHubSync, Service.SendHubSync>(new ContainerControlledLifetimeManager());
 
             // Hub must be transient see signalr docs
             containerObj.RegisterType<HubSync, HubSync>(new TransientLifetimeManager());

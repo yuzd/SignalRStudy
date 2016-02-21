@@ -16,7 +16,7 @@ namespace SignalR.Host.Hubs
     /// <summary>
     /// 客户端 建立连接实例
     /// </summary>
-    public class HubSync : Hub<ISendHubSync>
+    public class HubSync : Hub
     {
         private readonly IHubLogger _slabLogger;
 
@@ -166,7 +166,6 @@ namespace SignalR.Host.Hubs
         /// <summary>
         /// 获取所有用户
         /// </summary>
-        /// <param name="_userInfoList"></param>
         public void RefreshAllClientList()
         {
             Clients.All.GetAllClientList(GlobalData.userInfoList);
@@ -184,8 +183,61 @@ namespace SignalR.Host.Hubs
             Clients.Caller.GetUserInfo(userInfo);
         }
 
+        /// <summary>
+        /// 加入组
+        /// </summary>
+        /// <param name="groupName"></param>
+        public void SubscribeGroup(string groupName)
+        {
+            Groups.Add(Context.ConnectionId, groupName);
+        }
+
+        /// <summary>
+        /// 离开组
+        /// </summary>
+        /// <param name="groupName"></param>
+        public void UnsubscribeGroup(string groupName)
+        {
+            Groups.Remove(Context.ConnectionId, groupName);
+        }
+
+        /// <summary>
+        /// 加入会话
+        /// </summary>
+        /// <param name="name"></param>
+        public void Subscribe(string name)
+        {
+            //TODO 容错
+            if (!GlobalData.userInfoList.ContainsKey(name))
+            {
+                GlobalData.userInfoList.TryAdd(name, new UserInfo {ConnectionId = Context.ConnectionId, UserName = name});
+                ////Clients 通知所有用户刷新用户列表
+                RefreshAllClientList();
+                //系统通知，新用户进入聊天室 
+                SendAllClientExceptSelf(name,"加入聊天");
+            }
+        }
+
+        /// <summary>
+        /// 离开会话
+        /// </summary>
+        /// <param name="name"></param>
+        public void Unsubscribe(string name)
+        {
+            if (GlobalData.userInfoList.ContainsKey(name))
+            {
+                UserInfo userInfo = new UserInfo();
+                GlobalData.userInfoList.TryRemove(name,out userInfo);
+                ////Clients 通知所有用户刷新用户列表
+                RefreshAllClientList();
+                //系统通知，用户离开聊天室 
+                SendAllClientExceptSelf(name, "离开聊天");
+            }
+        }
+
         #endregion
 
+       
         public override Task OnConnected()
         {
             _slabLogger.Log(HubServerType.HubServerVerbose, "HubSync OnConnected" + Context.ConnectionId);

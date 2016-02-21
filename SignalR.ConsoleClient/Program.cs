@@ -25,6 +25,7 @@ namespace SignalR.ConsoleClient
             ObservableEventListener.LogToConsole(formatter);
             #endregion
 
+            string name = "AA";
 
             var myHubClient = new MyHubClient();
             while (true)
@@ -34,7 +35,19 @@ namespace SignalR.ConsoleClient
                 {
                     if (myHubClient.State == ConnectionState.Connected)
                     {
-                        //myHubClient.AddMessage("client", "hello all");
+                        myHubClient.SendToSelf(name, "hello all");
+                    }
+                    else
+                    {
+                        HubClientEvents.Log.Warning("Can't send message, connectionState= " + myHubClient.State);
+                    }
+
+                }
+                if (key.ToUpper() == "B")
+                {
+                    if (myHubClient.State == ConnectionState.Connected)
+                    {
+                        myHubClient.SendToSingle(Console.ReadLine(),name,"hello world");
                     }
                     else
                     {
@@ -54,32 +67,36 @@ namespace SignalR.ConsoleClient
                     }
 
                 }
-                if (key.ToUpper() == "O")
+                if (key.ToUpper() == "S")
                 {
+                    name = Console.ReadLine();
                     if (myHubClient.State == ConnectionState.Connected)
                     {
-                        
+                        myHubClient.Subscribe(name);
                     }
                     else
                     {
                         HubClientEvents.Log.Warning("Can't send message, connectionState= " + myHubClient.State);
                     }
 
-
                 }
+                
+                if (key.ToUpper() == "Q")
+                {
+                    if (myHubClient.State == ConnectionState.Connected)
+                    {
+                        myHubClient.Unsubscribe(name);
+                    }
+                    else
+                    {
+                        HubClientEvents.Log.Warning("Can't send message, connectionState= " + myHubClient.State);
+                    }
+                }
+
                 if (key.ToUpper() == "C")
                 {
                     myHubClient.CloseHub();
                     HubClientEvents.Log.Informational("Closed Hub");
-                }
-                if (key.ToUpper() == "S")//重新开始
-                {
-                    myHubClient.StartHub();
-                    HubClientEvents.Log.Informational("Started the Hub");
-                }
-                if (key.ToUpper() == "Q")
-                {
-                    break;
                 }
             }
         }

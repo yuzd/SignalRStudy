@@ -10,7 +10,7 @@ using SignalR.SLAB.Services;
 
 namespace SignalR.Host.Service
 {
-    public class SendHubSync : ISendHubSync
+    public class SendHubSync : HubClient.SendHubSync
     {
         private readonly IHubLogger _slabLogger;
         private readonly IHubContext _hubContext;
@@ -22,90 +22,92 @@ namespace SignalR.Host.Service
         }
 
 
-        public void SendMessage(string name, string message)
+        public override void Heartbeat()
         {
             throw new System.NotImplementedException();
         }
 
-        public void Heartbeat()
-        {
-            _hubContext.Clients.All.heartbeat();
-            _slabLogger.Log(HubServerType.HubServerVerbose, "MyHub Sending heartbeat");
-        }
-
-        public void RefreshAllClientList()
+        public override void RefreshAllClientList()
         {
             throw new System.NotImplementedException();
         }
 
-        public void GetCurrentUserInfo()
+        public override void GetCurrentUserInfo()
         {
             throw new System.NotImplementedException();
         }
 
-      
-
-        public void SendAllClient(string name, string message)
+        public override void SendAllClient(string name, string message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendAllClientExceptSelf(string name, string message)
+        public override void SendAllClientExceptSelf(string name, string message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendToSelf(string name, string message)
+        public override void SendToSelf(string name, string message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendToSingle(string toConnectionID, string name, string message)
+        public override void SendToSingle(string toConnectionID, string name, string message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendToMany(IList<string> connectionIds, string name, string message)
+        public override void SendToMany(IList<string> connectionIds, string name, string message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendAllClientExcept(string name, string message, params string[] connectionIds)
+        public override void SendAllClientExcept(string name, string message, params string[] connectionIds)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendToGroup(string groupName, string name, string message)
+        public override void SendToGroup(string groupName, string name, string message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendToGroupExcept(string groupName, string name, string message, params string[] connectionIds)
+        public override void SendToGroupExcept(string groupName, string name, string message, params string[] connectionIds)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendToGroups(IList<string> groupNameList, string name, string message)
+        public override void SendToGroups(IList<string> groupNameList, string name, string message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendToOtherGroups(string groupName, string name, string message)
+        public override void SendToOtherGroups(string groupName, string name, string message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SendToOtherManyGroups(IList<string> groupNameList, string name, string message)
+        public override void SendToOtherManyGroups(IList<string> groupNameList, string name, string message)
         {
             throw new System.NotImplementedException();
         }
 
-        public void GetAllClientList(ConcurrentDictionary<string, UserInfo> _userInfoList)
+        public override void SubscribeGroup(string groupName)
         {
             throw new System.NotImplementedException();
         }
 
-        public void GetUserInfo(UserInfo userInfo)
+        public override void UnsubscribeGroup(string groupName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Subscribe(string name)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Unsubscribe(string name)
         {
             throw new System.NotImplementedException();
         }

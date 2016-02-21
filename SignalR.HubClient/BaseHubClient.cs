@@ -9,7 +9,7 @@ using SignalR.SLAB.Services;
 
 namespace SignalR.HubClient
 {
-    public abstract class BaseHubClient
+    public abstract class BaseHubClient: SendHubSync
     {
         protected HubConnection _hubConnection;
         protected IHubProxy _myHubProxy;
@@ -104,8 +104,8 @@ namespace SignalR.HubClient
 
         void _hubConnection_Received(string obj)
         {
-            SlabClientLogger.Log(HubClientType.HubClientInformational,
-            "_hubConnection_Received New State:" + _hubConnection.State + " " + _hubConnection.ConnectionId);
+            //SlabClientLogger.Log(HubClientType.HubClientInformational,
+            //"_hubConnection_Received New State:" + _hubConnection.State + " " + _hubConnection.ConnectionId);
         }
     }
 }
