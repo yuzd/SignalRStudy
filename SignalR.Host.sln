@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR.HubClient", "Signal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR.ConsoleClient", "SignalR.ConsoleClient\SignalR.ConsoleClient.csproj", "{80725D13-92B4-411E-A01E-4E3528A45E81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR.Host.WindowsService", "SignalR.Host.WindowsService\SignalR.Host.WindowsService.csproj", "{16F7B524-E379-4BBF-8A88-951F71BBD4EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{80725D13-92B4-411E-A01E-4E3528A45E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80725D13-92B4-411E-A01E-4E3528A45E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80725D13-92B4-411E-A01E-4E3528A45E81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16F7B524-E379-4BBF-8A88-951F71BBD4EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16F7B524-E379-4BBF-8A88-951F71BBD4EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16F7B524-E379-4BBF-8A88-951F71BBD4EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16F7B524-E379-4BBF-8A88-951F71BBD4EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

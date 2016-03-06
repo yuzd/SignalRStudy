@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Tracing;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -24,20 +25,7 @@ namespace SignalR.Host
 
         public static void Start()
         {
-            #region SLAB
-            var ObservableEventListener = new ObservableEventListener();
-            ObservableEventListener.EnableEvents(ControllerEvents.Log, EventLevel.LogAlways, Keywords.All);
-            ObservableEventListener.EnableEvents(GlobalEvents.Log, EventLevel.LogAlways, Keywords.All);
-            ObservableEventListener.EnableEvents(HubServerEvents.Log, EventLevel.LogAlways, Keywords.All);
-            var formatter = new PrefixEventTextFormatter("-----------", null, "# ", @"yyyy-MM-dd hh\:mm\:ss\.fff");
-            ObservableEventListener.LogToConsole(formatter);
-            #endregion
-
-            //Hub孵化器
-            GlobalHost.DependencyResolver.Register(typeof (IHubActivator),
-                () => new UnityHubActivator(UnityConfiguration.GetConfiguredContainer()));
-            GlobalHost.HubPipeline.AddModule(new LoggingPipelineModule());
-            GlobalHost.HubPipeline.AddModule(new ErrorHandlingPipelineModule());
+            InitConfiguration();
             var url = ConfigUtils.GetConfig<string>("HubServiceUrl");
             using (WebApp.Start(url))
             {
@@ -82,5 +70,55 @@ namespace SignalR.Host
                 map.RunSignalR(hubConfiguration);
             });
         }
+
+        private static void InitConfiguration()
+        {
+            #region SLAB
+
+            var ObservableEventListener = new ObservableEventListener();
+            ObservableEventListener.EnableEvents(ControllerEvents.Log, EventLevel.LogAlways, Keywords.All);
+            ObservableEventListener.EnableEvents(GlobalEvents.Log, EventLevel.LogAlways, Keywords.All);
+            ObservableEventListener.EnableEvents(HubServerEvents.Log, EventLevel.LogAlways, Keywords.All);
+            var formatter = new PrefixEventTextFormatter("-----------", null, "# ", @"yyyy-MM-dd hh\:mm\:ss\.fff");
+            ObservableEventListener.LogToConsole(formatter);
+
+            #endregion
+
+            //Hub孵化器
+            GlobalHost.DependencyResolver.Register(typeof(IHubActivator),
+                () => new UnityHubActivator(UnityConfiguration.GetConfiguredContainer()));
+            GlobalHost.HubPipeline.AddModule(new LoggingPipelineModule());
+            GlobalHost.HubPipeline.AddModule(new ErrorHandlingPipelineModule());
+        }
+
+        #region Windows Service
+
+
+        static readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private static IDisposable _runningInstance;
+
+
+        public static void StartServer()
+        {
+           
+            var cancellationTokenSource = new CancellationTokenSource();
+            Task.Factory.StartNew(RunSignalRServer, TaskCreationOptions.LongRunning
+                                  , cancellationTokenSource.Token);
+        }
+
+        private static void RunSignalRServer(object task)
+        {
+            InitConfiguration();
+            var url = ConfigUtils.GetConfig<string>("HubServiceUrl");
+            _runningInstance = WebApp.Start(url);
+        }
+
+
+        public static void StopServer()
+        {
+            _cancellationTokenSource.Cancel();
+            _runningInstance.Dispose();
+        } 
+        #endregion
     }
 }
