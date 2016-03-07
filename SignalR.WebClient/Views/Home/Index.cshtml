@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SignalR WebClient</title>
+    <style type="text/css">
+        .container {
+            background-color: #99CCFF;
+            border: thick solid #808080;
+            padding: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="button" id="heartbeat" value="心跳" />
+
+        <input type="button" id="getAllClientList" value="更新在线列表" />
+
+        <input type="text" id="message" />
+        <input type="button" id="sendmessage" value="发送信息" />
+        <input type="hidden" id="displayname" />
+    </div>
+    <div class="container">
+
+        <ul id="discussion"></ul>
+    </div>
+
+    <script src="~/Scripts/jquery-2.2.1.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.1.2.js"></script>
+    <!--SignalR hub script. -->
+    <script src="http://localhost:8089/signalr/hubs"></script>
+    <script type="text/javascript">
+        $(function () {
+            //设置Hubs  连接地址Url
+            $.connection.hub.url = "http://localhost:8089/signalr";
+
+            // 设置代理类
+            var chat = $.connection.hubSync;
+
+            // 自定义接收SendMessage方法
+            chat.client.sendMessage = function (name, message) {
+                var encodedName = $('<div />').text(name).html();
+                var encodedMsg = $('<div />').text(message).html();
+                $('#discussion').append('<li><strong>Recieved SendMessage' + encodedName
+                    + '</strong>&nbsp;&nbsp;' + encodedMsg + '</li>');
+            };
+
+            // 自定义接收GetAllClientList方法
+            chat.client.getAllClientList = function (list) {
+                console.log(list);
+            };
+
+            // 自定义接收Heartbeat方法
+            chat.client.heartbeat = function () {
+                var encodedName = $('<div />').text("heartbeat").html();
+                $('#discussion').append('<li><strong>Recieved  Heartbeat ' + encodedName + '</strong></li>');
+            };
+
+            // 设置用户名
+            $('#displayname').val(prompt('Enter your name:', ''));
+            $('#message').focus();
+            // 开始连接Hub
+            $.connection.hub.start().done(function () {
+                $('#sendmessage').click(function () {
+                    chat.server.sendAllClient($('#displayname').val(), $('#message').val());
+                    $('#message').val('').focus();
+                });
+
+                $('#heartbeat').click(function () {
+                    chat.server.heartbeat();
+                    $('#message').val('').focus();
+                });
+
+                $('#getAllClientList').click(function () {
+                    chat.server.refreshAllClientList();
+                    $('#message').val('').focus();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
