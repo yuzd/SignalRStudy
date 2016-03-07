@@ -15,12 +15,18 @@
     <div class="container">
         <input type="button" id="heartbeat" value="心跳" />
 
-        <input type="button" id="getAllClientList" value="更新在线列表" />
+        <input type="button" id="sendAllClient" value="群聊" />
 
         <input type="text" id="message" />
-        <input type="button" id="sendmessage" value="发送信息" />
+        <input type="button" id="sendmessage" value="和指定人聊" />
         <input type="hidden" id="displayname" />
+        <input type="hidden" id="connectionId" />
     </div>
+
+    <div class="container">
+        <ul id="users"></ul>
+    </div>
+
     <div class="container">
 
         <ul id="discussion"></ul>
@@ -31,56 +37,105 @@
     <!--SignalR hub script. -->
     <script src="~/Scripts/server.js"></script>
     <script type="text/javascript">
+        function bindId(obj) {
+            $('#connectionId').val($(obj).data('connectionid'));
+        };
+
+
         $(function () {
+
+
             //设置Hubs  连接地址Url
-            $.connection.hub.url = "http://localhost:8089/signalr";
+            //$.connection.hub.url = "http://localhost:8089/signalr";
 
             // 设置代理类
-            var chat = $.connection.hubSync;
+            var connection = $.hubConnection("http://localhost:8089/signalr", { useDefaultPath: false });
+            var chat = connection.createHubProxy('hubSync');
 
             // 自定义接收SendMessage方法
-            chat.client.sendMessage = function (name, message) {
+            chat.on('sendMessage', function (name, message) {
                 var encodedName = $('<div />').text(name).html();
                 var encodedMsg = $('<div />').text(message).html();
-                $('#discussion').append('<li><strong>Recieved SendMessage' + encodedName
-                    + '</strong>&nbsp;&nbsp;' + encodedMsg + '</li>');
-            };
+                $('#discussion').append('<li><strong>【' + encodedName
+                    + '】：</strong>&nbsp;&nbsp;' + encodedMsg + '</li>');
+            });
+
+            //chat.client.sendMessage = function (name, message) {
+            //    var encodedName = $('<div />').text(name).html();
+            //    var encodedMsg = $('<div />').text(message).html();
+            //    $('#discussion').append('<li><strong>【' + encodedName
+            //        + '】：</strong>&nbsp;&nbsp;' + encodedMsg + '</li>');
+            //};
 
             // 自定义接收GetAllClientList方法
-            chat.client.getAllClientList = function (list) {
-                console.log(list);
-            };
+            chat.on('getAllClientList', function (list) {
+                $.each(list, function (index, item) {
+                    $('#users').append('<li data-connectionId="' + item.ConnectionId + '" onclick="bindId(this)" >' + item.UserName + '</li>');
+                });
+            });
+            //chat.client.getAllClientList = function (list) {
+            //    if (list) {
+            //        $(list).each(function(item) {
+            //            console.log(item);
+            //        });
+            //    }
+            //};
 
             // 自定义接收Heartbeat方法
-            chat.client.heartbeat = function () {
+            chat.on('heartbeat', function () {
                 var encodedName = $('<div />').text("heartbeat").html();
-                $('#discussion').append('<li><strong>Recieved  Heartbeat ' + encodedName + '</strong></li>');
-            };
+                $('#discussion').append('<li><strong>Recieved  ' + encodedName + '</strong></li>');
+            });
+            //chat.client.heartbeat = function () {
+            //    var encodedName = $('<div />').text("heartbeat").html();
+            //    $('#discussion').append('<li><strong>Recieved  Heartbeat ' + encodedName + '</strong></li>');
+            //};
 
             // 设置用户名
             $('#displayname').val(prompt('Enter your name:', ''));
             $('#message').focus();
             // 开始连接Hub
-            $.connection.hub.start().done(function () {
+            connection.start().done(function () {
+                //subscribe
+                chat.invoke('subscribe', $('#displayname').val()).done(function () {
+                    console.log('subscribe success');
+                }).fail(function (error) {
+                    console.log('subscribe Error: ' + error);
+                });
+
+                //更新在线列表
+                //chat.server.refreshAllClientList().done(function () {
+                //    console.log('refreshAllClientList success');
+                //}).fail(function (error) {
+                //    console.log('refreshAllClientList Error: ' + error);
+                //});
+
+                //单聊
                 $('#sendmessage').click(function () {
-                    chat.server.sendAllClient($('#displayname').val(), $('#message').val()).done(function() {
+                    var connectionId = $('#connectionId').val();
+                    if (!connectionId) {
+                        return;
+                    }
+                    chat.invoke('sendToSingle', connectionId, $('#displayname').val(), $('#message').val()).done(function () {
                         $('#message').val('').focus();
                     }).fail(function (error) {
                         console.log('Error: ' + error);
                     });
-                   
+
                 });
 
+                //心跳
                 $('#heartbeat').click(function () {
-                    chat.server.heartbeat().done(function () {
+                    chat.invoke('heartbeat').done(function () {
                         $('#message').val('').focus();
                     }).fail(function (error) {
                         console.log('Error: ' + error);
                     });
                 });
 
-                $('#getAllClientList').click(function () {
-                    chat.server.refreshAllClientList().done(function () {
+                //群聊
+                $('#sendAllClient').click(function () {
+                    chat.invoke('sendAllClient', $('#displayname').val(), $('#message').val()).done(function () {
                         $('#message').val('').focus();
                     }).fail(function (error) {
                         console.log('Error: ' + error);
@@ -95,4 +150,3 @@
     </script>
 </body>
 </html>
-

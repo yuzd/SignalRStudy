@@ -35,7 +35,7 @@ namespace SignalR.ConsoleClient
                 {
                     if (myHubClient.State == ConnectionState.Connected)
                     {
-                        myHubClient.SendToSelf(name, "hello all");
+                        myHubClient.SendAllClient(name, "hello all");
                     }
                     else
                     {
